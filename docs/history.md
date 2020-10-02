@@ -1,5 +1,8 @@
 # Project History
 
+### 10/1/2020
+Project acquired by Foretold Software
+
 ### 10/1/2013
 Project added to git repo
 
