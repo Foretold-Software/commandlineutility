@@ -1,5 +1,8 @@
 # Project History
 
+### 11/14/2020
+Foretold-owned git repo created
+
 ### 10/1/2020
 Project acquired by Foretold Software
 
