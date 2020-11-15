@@ -1,0 +1,45 @@
+﻿# Copyright (c) Foretold Software, LLC. All rights reserved. Licensed under the Microsoft Public License (MS-PL). See the license.md file in the project root directory for full license information.
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineUtility.Sample", "CommandLineUtility.Sample\CommandLineUtility.Sample.csproj", "{E4893468-CED8-4785-8475-932588042C3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineUtility.Tests", "CommandLineUtility.Tests\CommandLineUtility.Tests.csproj", "{8DD4362A-EABD-4BF4-BD29-3655D827A28C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineUtility.Net35", "CommandLineUtility\CommandLineUtility.Net35.csproj", "{C4AA0233-5F3E-41A2-B542-D53621421F00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineUtility.Net40", "CommandLineUtility\CommandLineUtility.Net40.csproj", "{E1CE698C-0CA6-4632-B16F-510A93A9988F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineUtility.Net45", "CommandLineUtility\CommandLineUtility.Net45.csproj", "{9D79683E-1D26-4B4B-A206-B728EBE1F2E3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E4893468-CED8-4785-8475-932588042C3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4893468-CED8-4785-8475-932588042C3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4893468-CED8-4785-8475-932588042C3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4893468-CED8-4785-8475-932588042C3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DD4362A-EABD-4BF4-BD29-3655D827A28C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DD4362A-EABD-4BF4-BD29-3655D827A28C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DD4362A-EABD-4BF4-BD29-3655D827A28C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DD4362A-EABD-4BF4-BD29-3655D827A28C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4AA0233-5F3E-41A2-B542-D53621421F00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4AA0233-5F3E-41A2-B542-D53621421F00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4AA0233-5F3E-41A2-B542-D53621421F00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4AA0233-5F3E-41A2-B542-D53621421F00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1CE698C-0CA6-4632-B16F-510A93A9988F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1CE698C-0CA6-4632-B16F-510A93A9988F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1CE698C-0CA6-4632-B16F-510A93A9988F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1CE698C-0CA6-4632-B16F-510A93A9988F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D79683E-1D26-4B4B-A206-B728EBE1F2E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D79683E-1D26-4B4B-A206-B728EBE1F2E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D79683E-1D26-4B4B-A206-B728EBE1F2E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D79683E-1D26-4B4B-A206-B728EBE1F2E3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

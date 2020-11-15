@@ -1,0 +1,194 @@
+<!-- Copyright (c) Foretold Software, LLC. All rights reserved. Licensed under the Microsoft Public License (MS-PL). See the license.md file in the project root directory for full license information. -->
+<div class="wikidoc">
+<p><strong><span style="text-decoration:underline"><span style="font-size:x-large; color:#17365d">Command Line Utility</span></span></strong></p>
+<p style="margin:0in 0in 10pt; text-indent:0.5in"><span style="font-family:Calibri">The Command Line Utility is a tool used to enable the fast and easy creation of settings classes that interface directly with the input from the command line. The Command Line
+ Utility performs all the parsing and conversion operations required to turn command line input into class property values. Using the utility, your settings classes will be simple, easy to read and understand, and require very little coding to configure.</span></p>
+<p style="margin:0in 0in 10pt; text-indent:0.5in"><span style="font-family:Calibri">This document outlines the features of the Command Line Utility, their intended purposes, and how to implement them in your own project.</span></p>
+<h1 style="margin:24pt 0in 0pt"><span style="font-size:large"><span style="color:#365f91"><span style="font-family:Cambria">Terminology</span></span></span></h1>
+<p style="margin:0in 0in 10pt"><span style="font-family:Calibri">Throughout this document, whenever any of the following terms are printed in
+<strong>bold</strong>, refer to this section for its meaning.</span></p>
+<table border="1" width="102%" cellspacing="0" cellpadding="0" style="border-collapse:collapse; width:102.34%">
+<tbody>
+<tr>
+<td valign="top" width="23%" style="border-top:#7ba0cd 1pt solid; border-right:#f0f0f0; background:#4f81bd; border-bottom:#7ba0cd 1pt solid; padding-bottom:0in; padding-top:0in; padding-left:5.4pt; border-left:#7ba0cd 1pt solid; padding-right:5.4pt; width:23.94%">
+<p style="margin:0in 0in 0pt; line-height:normal"><strong><span style="color:white"><span style="font-family:Calibri">Term</span></span></strong></p>
+</td>
+<td valign="top" width="76%" style="border-top:#7ba0cd 1pt solid; border-right:#7ba0cd 1pt solid; background:#4f81bd; border-bottom:#7ba0cd 1pt solid; padding-bottom:0in; padding-top:0in; padding-left:5.4pt; border-left:#f0f0f0; padding-right:5.4pt; width:76.06%">
+<p style="margin:0in 0in 0pt; line-height:normal"><strong><span style="color:white"><span style="font-family:Calibri">Description</span></span></strong></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="23%" style="border-top:#f0f0f0; border-right:#f0f0f0; background:#d3dfee; border-bottom:#7ba0cd 1pt solid; padding-bottom:0in; padding-top:0in; padding-left:5.4pt; border-left:#7ba0cd 1pt solid; padding-right:5.4pt; width:23.94%">
+<p style="margin:0in 0in 0pt; line-height:normal"><strong><span style="font-family:Calibri">Utility</span></strong></p>
+</td>
+<td valign="top" width="76%" style="border-top:#f0f0f0; border-right:#7ba0cd 1pt solid; background:#d3dfee; border-bottom:#7ba0cd 1pt solid; padding-bottom:0in; padding-top:0in; padding-left:5.4pt; border-left:#f0f0f0; padding-right:5.4pt; width:76.06%">
+<p style="margin:0in 0in 0pt; line-height:normal"><span style="font-family:Calibri">The&nbsp;Command Line Utility</span></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="23%" style="border-top:#f0f0f0; border-right:#f0f0f0; border-bottom:#7ba0cd 1pt solid; padding-bottom:0in; padding-top:0in; padding-left:5.4pt; border-left:#7ba0cd 1pt solid; padding-right:5.4pt; width:23.94%; background-color:transparent">
+<p style="margin:0in 0in 0pt; line-height:normal"><strong><span style="font-family:Calibri">Collection</span></strong></p>
+</td>
+<td valign="top" width="76%" style="border-top:#f0f0f0; border-right:#7ba0cd 1pt solid; border-bottom:#7ba0cd 1pt solid; padding-bottom:0in; padding-top:0in; padding-left:5.4pt; border-left:#f0f0f0; padding-right:5.4pt; width:76.06%; background-color:transparent">
+<p style="margin:0in 0in 0pt; line-height:normal"><span style="font-family:Calibri">An array (System.Array) or a type inheriting from System.Collections.ICollection.</span></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="23%" style="border-top:#f0f0f0; border-right:#f0f0f0; background:#d3dfee; border-bottom:#7ba0cd 1pt solid; padding-bottom:0in; padding-top:0in; padding-left:5.4pt; border-left:#7ba0cd 1pt solid; padding-right:5.4pt; width:23.94%">
+<p style="margin:0in 0in 0pt; line-height:normal"><strong><span style="font-family:Calibri">Convertible Type</span></strong></p>
+</td>
+<td valign="top" width="76%" style="border-top:#f0f0f0; border-right:#7ba0cd 1pt solid; background:#d3dfee; border-bottom:#7ba0cd 1pt solid; padding-bottom:0in; padding-top:0in; padding-left:5.4pt; border-left:#f0f0f0; padding-right:5.4pt; width:76.06%">
+<p style="margin:0in 0in 0pt; line-height:normal"><span style="font-family:Calibri">A type that can be converted to by the methods inherited from the System.IConvertible interface, or an enum type.</span></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="23%" style="border-top:#f0f0f0; border-right:#f0f0f0; border-bottom:#7ba0cd 1pt solid; padding-bottom:0in; padding-top:0in; padding-left:5.4pt; border-left:#7ba0cd 1pt solid; padding-right:5.4pt; width:23.94%; background-color:transparent">
+<p style="margin:0in 0in 0pt; line-height:normal"><strong><span style="font-family:Calibri">Convertible Collection</span></strong></p>
+</td>
+<td valign="top" width="76%" style="border-top:#f0f0f0; border-right:#7ba0cd 1pt solid; border-bottom:#7ba0cd 1pt solid; padding-bottom:0in; padding-top:0in; padding-left:5.4pt; border-left:#f0f0f0; padding-right:5.4pt; width:76.06%; background-color:transparent">
+<p style="margin:0in 0in 0pt; line-height:normal"><span style="font-family:Calibri">A
+<strong>collection</strong> whose elements are of a <strong>convertible type</strong>.</span></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="23%" style="border-top:#f0f0f0; border-right:#f0f0f0; background:#d3dfee; border-bottom:#7ba0cd 1pt solid; padding-bottom:0in; padding-top:0in; padding-left:5.4pt; border-left:#7ba0cd 1pt solid; padding-right:5.4pt; width:23.94%">
+<p style="margin:0in 0in 0pt; line-height:normal"><strong><span style="font-family:Calibri">GIA</span></strong></p>
+</td>
+<td valign="top" width="76%" style="border-top:#f0f0f0; border-right:#7ba0cd 1pt solid; background:#d3dfee; border-bottom:#7ba0cd 1pt solid; padding-bottom:0in; padding-top:0in; padding-left:5.4pt; border-left:#f0f0f0; padding-right:5.4pt; width:76.06%">
+<p style="margin:0in 0in 0pt; line-height:normal"><span style="font-family:Calibri">Global Indexed Argument</span></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="23%" style="border-top:#f0f0f0; border-right:#f0f0f0; border-bottom:#7ba0cd 1pt solid; padding-bottom:0in; padding-top:0in; padding-left:5.4pt; border-left:#7ba0cd 1pt solid; padding-right:5.4pt; width:23.94%; background-color:transparent">
+<p style="margin:0in 0in 0pt; line-height:normal"><strong><span style="font-family:Calibri">GUA</span></strong></p>
+</td>
+<td valign="top" width="76%" style="border-top:#f0f0f0; border-right:#7ba0cd 1pt solid; border-bottom:#7ba0cd 1pt solid; padding-bottom:0in; padding-top:0in; padding-left:5.4pt; border-left:#f0f0f0; padding-right:5.4pt; width:76.06%; background-color:transparent">
+<p style="margin:0in 0in 0pt; line-height:normal"><span style="font-family:Calibri">Global Unconsumed Argument</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0in 0in 10pt">&nbsp;</p>
+<p style="margin:0in 0in 10pt">&nbsp;</p>
+<table border="1" cellspacing="0" cellpadding="0" style="border-collapse:collapse">
+<tbody>
+<tr>
+<td valign="top" width="638" style="background:#fde4d0; padding-bottom:0in; padding-top:0in; padding-left:5.4pt; padding-right:5.4pt; width:6.65in; border:#f9b074 1pt solid">
+<p style="margin:0in 0in 0pt; line-height:normal"><span style="font-family:Calibri"><strong>Important Note:</strong> The
+<strong>Utility</strong> has built-in validation functionality to ensure that your settings class is designed properly. However, this validation will only run when a debugger is attached to the process, so as not to negatively impact the performance of your
+ application&rsquo;s production release. Ensure that you test your project with a debugger attached to make sure it is designed properly. If you want to run this settings class validation manually, simply call the CommandLineParser.ValidateSettingsClass method.</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0in 0in 10pt">&nbsp;</p>
+<h1 style="margin:24pt 0in 0pt"><span style="font-size:large"><span style="color:#365f91"><span style="font-family:Cambria">Ingredients</span></span></span></h1>
+<p style="margin:0in 0in 10pt"><span style="font-family:Calibri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The
+<strong>utility</strong>&rsquo;s ingredients consist of switches, their arguments, global indexed arguments, global unconsumed arguments, and argument validation methods.</span></p>
+<h2 style="margin:10pt 0in 0pt"><span style="font-size:medium"><span style="color:#4f81bd"><span style="font-family:Cambria">Switches</span></span></span></h2>
+<p style="margin:0in 0in 10pt"><span style="font-family:Calibri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Switches are used to turn features of your application on or off. On the command line, they&rsquo;re
+ generally indicated by a dash (&ldquo;-&ldquo;) or a forward slash (&ldquo;/&rdquo;) followed by the name of the switch, with no space between them. A common use is for silent functionality. If an application should run with no UI or user input, it&rsquo;s
+ said to be running silently, and many applications support a switch that turns silent mode on. Example:
+<em><span style="background:lightgrey">myapp.exe -silent</span></em> or <em><span style="background:lightgrey">myapp.exe -s</span></em>.</span></p>
+<p style="margin:0in 0in 10pt"><span style="font-family:Calibri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Occasionally, switches accept arguments immediately following the switch. An example would be an application
+ that outputs to a file specified on the command line: <em><span style="background:lightgrey">myapp.exe -out &ldquo;C:\myfile.txt&rdquo;</span></em>.</span></p>
+<h2 style="margin:10pt 0in 0pt"><span style="font-size:medium"><span style="color:#4f81bd"><span style="font-family:Cambria">Global Indexed Arguments</span></span></span></h2>
+<p style="margin:0in 0in 10pt"><span style="font-family:Calibri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Arguments are essential to many applications, providing a fast and easy way to give the application input.
+ Global Indexed Arguments (GIA&rsquo;s) are arguments that are accepted as input without the need of a preceding switch, they are generally used when the application
+<em>requires</em> that argument&rsquo;s input to function correctly.</span></p>
+<p style="margin:0in 0in 10pt; text-indent:0.5in"><span style="font-family:Calibri">Since these arguments belong to the command and not a switch, we refer to them as &ldquo;global&rdquo;. These global arguments are usually required to follow a certain order,
+ so that the application knows how to use each input. For this reason, these global arguments are indexed numerically, hence its name. A common use is the specification of an output file, same as before except without the switch (implying that this information
+ is now somewhat more vital): <em><span style="background:lightgrey">myapp.exe &ldquo;C:\myfile.txt&rdquo;</span></em>.</span></p>
+<h2 style="margin:10pt 0in 0pt"><span style="font-size:medium"><span style="color:#4f81bd"><span style="font-family:Cambria">Global Unconsumed Arguments</span></span></span></h2>
+<p style="margin:0in 0in 10pt"><span style="font-family:Calibri">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></p>
+<p><span style="font-size:11pt; font-family:'Calibri','sans-serif'; line-height:115%">&nbsp;</span></p>
+<p style="margin:0in 0in 10pt">&nbsp;</p>
+<h1 style="margin:24pt 0in 0pt"><span style="font-size:large"><span style="color:#365f91"><span style="font-family:Cambria">Switches</span></span></span></h1>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The property scope must be public.</span></p>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The property must be an instance property, not static.</span></p>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">Property type can be any of the following types:</span></p>
+<p style="margin:0in 0in 0pt 1in; text-indent:-0.25in"><span style="font-family:'Courier New'">o<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">A <strong>convertible type</strong></span></p>
+<p style="margin:0in 0in 0pt 1in; text-indent:-0.25in"><span style="font-family:'Courier New'">o<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">A <strong>collection</strong> whose elements are any of the above types.</span></p>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">If the property is not a collection and it allows arguments, then restrict it to one argument.</span></p>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">If SetValue is null, the default value for the switch&rsquo;s property type will be used.</span></p>
+<p style="margin:0in 0in 0pt 1in; text-indent:-0.25in"><span style="font-family:'Courier New'">o<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">Note: Default values can be found at
+</span><a href="http://msdn.microsoft.com/en-us/library/83fhsxwc.aspx"><span style="font-family:Calibri; color:#0000ff">http://msdn.microsoft.com/en-us/library/83fhsxwc.aspx</span></a></p>
+<p style="margin:0in 0in 10pt 1in; text-indent:-0.25in"><span style="font-family:'Courier New'">o<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">Note: For enum type MyEnum, the default value is the equivalent of &ldquo;(MyEnum)0&rdquo;. So ensure that your enum types include a value whose underlying value is 0.</span></p>
+<p style="margin:0in 0in 10pt">&nbsp;</p>
+<h1 style="margin:24pt 0in 0pt"><span style="font-size:large"><span style="color:#365f91"><span style="font-family:Cambria">Global Indexed Arguments</span></span></span></h1>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The property scope must be public.</span></p>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The property must be an instance member, not static.</span></p>
+<p style="margin:0in 0in 10pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">Property type must be a <strong>convertible type</strong>,and not a
+<strong>collection</strong>.</span></p>
+<p style="margin:0in 0in 10pt">&nbsp;</p>
+<h1 style="margin:24pt 0in 0pt"><span style="font-size:large"><span style="color:#365f91"><span style="font-family:Cambria">Global Unconsumed Arguments</span></span></span></h1>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The GUA&rsquo;s property is defined in the CommandLineUtility.ISettings interface.</span></p>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The property is scoped as public.</span></p>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The property is an instance member, not static.</span></p>
+<p style="margin:0in 0in 10pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The property type is an array of type System.String.</span></p>
+<p style="margin:0in 0in 10pt">&nbsp;</p>
+<h1 style="margin:24pt 0in 0pt"><span style="font-size:large"><span style="color:#365f91"><span style="font-family:Cambria">Argument Validation Methods</span></span></span></h1>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The method scope must be public.</span></p>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The method must be an instance member, not static.</span></p>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The method must have one parameter.</span></p>
+<p style="margin:0in 0in 10pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">Parameter modifiers &ldquo;out&rdquo; and &ldquo;ref&rdquo; are not allowed.</span></p>
+<h2 style="margin:10pt 0in 0pt"><span style="font-size:medium"><span style="color:#4f81bd"><span style="font-family:Cambria">Switch Arguments</span></span></span></h2>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The method&rsquo;s parameter must be one of the following types:</span></p>
+<p style="margin:0in 0in 0pt 1in; text-indent:-0.25in"><span style="font-family:'Courier New'">o<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">System.String</span></p>
+<p style="margin:0in 0in 0pt 1in; text-indent:-0.25in"><span style="font-family:'Courier New'">o<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The same type or an ancestor type of the associated switch&rsquo;s property&rsquo;s type.</span></p>
+<p style="margin:0in 0in 0pt 1in; text-indent:-0.25in"><span style="font-family:'Courier New'">o<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">A <strong>collection</strong> whose element type is System.String.</span></p>
+<p style="margin:0in 0in 0pt 1in; text-indent:-0.25in"><span style="font-family:'Courier New'">o<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">A <strong>collection</strong> whose element type is the same type or an ancestor type of the associated switch&rsquo;s property&rsquo;s type.</span></p>
+<p style="margin:0in 0in 0pt 1.5in; text-indent:-0.25in"><span style="font-family:wingdings">&sect;<span style="font:7pt 'Times New Roman'">&nbsp;
+</span></span><span style="font-family:Calibri">&ldquo;params&rdquo; are allowed, this should not make a difference to the Utility</span></p>
+<p style="margin:0in 0in 0pt 1in; text-indent:-0.25in"><span style="font-family:'Courier New'">o<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">Parameter modifiers &ldquo;out&rdquo; and &ldquo;ref&rdquo; are not allowed.</span></p>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The method must have the following return type:</span></p>
+<p style="margin:0in 0in 0pt 1in; text-indent:-0.25in"><span style="font-family:'Courier New'">o<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">System.Int32, if the parameter is a
+<strong>collection</strong>.</span></p>
+<p style="margin:0in 0in 10pt 1in; text-indent:-0.25in"><span style="font-family:'Courier New'">o<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">System.Boolean, if the parameter is not a
+<strong>collection</strong>.</span></p>
+<h2 style="margin:10pt 0in 0pt"><span style="font-size:medium"><span style="color:#4f81bd"><span style="font-family:Cambria">Global Indexed Arguments</span></span></span></h2>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The method&rsquo;s parameter must be one of the following types:</span></p>
+<p style="margin:0in 0in 0pt 1in; text-indent:-0.25in"><span style="font-family:'Courier New'">o<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">System.String</span></p>
+<p style="margin:0in 0in 0pt 1in; text-indent:-0.25in"><span style="font-family:'Courier New'">o<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The same type or an ancestor type of the associated argument&rsquo;s property&rsquo;s type</span></p>
+<p style="margin:0in 0in 10pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The method must have the return type System.Boolean.</span></p>
+<h2 style="margin:10pt 0in 0pt"><span style="font-size:medium"><span style="color:#4f81bd"><span style="font-family:Cambria">Global Unconsumed Arguments</span></span></span></h2>
+<p style="margin:0in 0in 0pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The method&rsquo;s parameter must be a
+<strong>collection</strong> of type System.String.</span></p>
+<p style="margin:0in 0in 10pt 0.5in; text-indent:-0.25in"><span style="font-family:symbol">&middot;<span style="font:7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-family:Calibri">The method must have the return type System.Boolean.</span></p>
+</div><div class="ClearBoth"></div>
