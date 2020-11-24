@@ -220,7 +220,7 @@ namespace CommandLineUtility
 								{
 									//Ensure that the parameter type is GTE the property type, or is a string.
 									if (!TypeIsGTE(parameterType, propertyType) && !parameterType.Equals(stringType))
-										throw  Exception("Argument validation method '{0}' has a parameter whose type must be equal to or an ancestor type of '{1}', or is '{2}'.", name, propertyType, stringType);
+										throw Exception("Argument validation method '{0}' has a parameter whose type must be equal to or an ancestor type of '{1}', or is '{2}'.", name, propertyType, stringType);
 								}
 
 								//Ensure the validation method has return type bool.
