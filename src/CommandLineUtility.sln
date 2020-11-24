@@ -1,5 +1,4 @@
-﻿# Copyright (c) Foretold Software, LLC. All rights reserved. Licensed under the Microsoft Public License (MS-PL). See the license.md file in the project root directory for full license information.
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineUtility.Sample", "CommandLineUtility.Sample\CommandLineUtility.Sample.csproj", "{E4893468-CED8-4785-8475-932588042C3C}"
