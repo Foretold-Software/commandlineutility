@@ -118,10 +118,10 @@ namespace CommandLineUtility
 					{
 						foreach (var attribute2 in switchAttributes)
 						{
-							if (!attribute1.Name.Equals(attribute2.Name, this.ComparisonRule) &&						//If they're not the same switch...
-								!attribute1.ExclusiveOf.Any(excl => excl.Equals(attribute2.Name, this.ComparisonRule)))	//...and the first switch's ExclusiveOf does not contain the name of the second switch...
+							if (!attribute1.Name.Equals(attribute2.Name, this.ComparisonRule) &&                        //If they're not the same switch...
+								!attribute1.ExclusiveOf.Any(excl => excl.Equals(attribute2.Name, this.ComparisonRule))) //...and the first switch's ExclusiveOf does not contain the name of the second switch...
 							{
-								attribute1.AddExclusion(attribute2.Name);												//...then add the second switch's name to the ExclusiveOf list of the first switch.
+								attribute1.AddExclusion(attribute2.Name);                                               //...then add the second switch's name to the ExclusiveOf list of the first switch.
 							}
 						}
 					}

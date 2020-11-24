@@ -9,7 +9,7 @@ namespace CommandLineUtility
 	{
 		public readonly PropertyInfo PropertyInfo;
 		public readonly SwitchAttribute SwitchAttribute;
-		
+
 		public string Name
 		{ get { return this.SwitchAttribute.Name; } }
 		public Type Type

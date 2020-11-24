@@ -15,14 +15,14 @@ namespace CommandLineUtility
 			// giArg = Global Indexed Argument
 			// guArg = Global Unconsumed Argument
 
-			int giArgIndex = 0;								//Holds the current index of the global indexed arguments
-			var sArgValues = new List<object>();			//Contains the values of the current switch's arguments
-			var giArgValues = new List<object>();			//Contains the values of the global indexed arguments
-			var guArgValues = new List<object>();			//Contains the values of the global unconsumed arguments
+			int giArgIndex = 0;                             //Holds the current index of the global indexed arguments
+			var sArgValues = new List<object>();            //Contains the values of the current switch's arguments
+			var giArgValues = new List<object>();           //Contains the values of the global indexed arguments
+			var guArgValues = new List<object>();           //Contains the values of the global unconsumed arguments
 
-			SwitchInfo switchInfo;							//Contains the current switch's info
-			var args = CommandLineArgs.Get();				//Contains the command line arguments without the executable path as the first argument.
-			var previousSwitches = new List<SwitchInfo>();	//Tracks which switches have been used so far
+			SwitchInfo switchInfo;                          //Contains the current switch's info
+			var args = CommandLineArgs.Get();               //Contains the command line arguments without the executable path as the first argument.
+			var previousSwitches = new List<SwitchInfo>();  //Tracks which switches have been used so far
 
 
 			for (int i = 0; i < args.Length; i++)
@@ -127,9 +127,9 @@ namespace CommandLineUtility
 		private List<object> Switch_RetrieveEligibleArguments(SwitchInfo currentSwitch, string currentArg, IEnumerable<string> potentialArguments)
 		{
 			object obj;
-			int argCount;												//The number of consumable, castible arguments
-			List<string> switchArguments;								//Contains the arguments to be consumed by a switch
-			List<object> switchArgumentsCasted = new List<object>();	//Contains the arguments to be consumed by a switch, casted to the correct type
+			int argCount;                                               //The number of consumable, castible arguments
+			List<string> switchArguments;                               //Contains the arguments to be consumed by a switch
+			List<object> switchArgumentsCasted = new List<object>();    //Contains the arguments to be consumed by a switch, casted to the correct type
 
 			//Gather all the consumable arguments immediately following the switch, up to the maximum allowed by the switch.
 			if (currentSwitch.SwitchAttribute.JoinArguments)
@@ -174,8 +174,8 @@ namespace CommandLineUtility
 			{
 				tempArg = arg; //Need a temp variable to pass as 'ref' within this foreach loop.
 
-				if ((switchInfo.SwitchAttribute.MaxArguments < 0 || arguments.Count < switchInfo.SwitchAttribute.MaxArguments) &&	//If the switch can accept more arguments and...
-					(this.ParserInfo.AllowSwitchCharsInArguments || !TryGetSwitch(ref tempArg, out temp)))							//...switch chars are allowed in args OR it's not another switch...
+				if ((switchInfo.SwitchAttribute.MaxArguments < 0 || arguments.Count < switchInfo.SwitchAttribute.MaxArguments) &&   //If the switch can accept more arguments and...
+					(this.ParserInfo.AllowSwitchCharsInArguments || !TryGetSwitch(ref tempArg, out temp)))                          //...switch chars are allowed in args OR it's not another switch...
 				{
 					//...then add it to the list of args.
 					arguments.Add(arg);
