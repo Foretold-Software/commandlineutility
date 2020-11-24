@@ -4,7 +4,7 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net45</TargetFramework>
+		<TargetFramework>net472</TargetFramework>
 
 		<AssemblyTitle>CommandLineUtility sample application</AssemblyTitle>
 		<Product>CommandLineUtility sample application</Product>

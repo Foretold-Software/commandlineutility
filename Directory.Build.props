@@ -1,0 +1,19 @@
+<!-- Copyright (c) Foretold Software, LLC. All rights reserved. Licensed under the Microsoft Public License (MS-PL). See the license.md file in the project root directory for full license information. -->
+
+<Project>
+
+	<PropertyGroup>
+		<!--
+			This props file is imported AFTER Microsoft.Common.props (so all common properties are already assigned)
+			and BEFORE the rest of the project file that imported Microsoft.Common.props.
+		-->
+		<CustomAfterMicrosoftCommonProps>$(MSBuildThisFileDirectory)tools\build.props</CustomAfterMicrosoftCommonProps>
+
+		<!--
+			This targets file is imported at the END of Microsoft.Common.targets, so it can be used to override
+			properties and targets which were already set in that file, such as the BeforeBuild and AfterBuild targets.
+		-->
+		<DirectoryBuildTargetsPath      >$(MSBuildThisFileDirectory)tools\build.targets</DirectoryBuildTargetsPath>
+	</PropertyGroup>
+
+</Project>

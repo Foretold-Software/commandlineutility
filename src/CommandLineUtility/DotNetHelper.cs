@@ -11,27 +11,32 @@ namespace CommandLineUtility
 	{
 		public static bool IsNullOrWhiteSpace(string value)
 		{
-#if NET40 || NET45
+#if NET35 || NET35_CLIENT
+			return IsNullOrWhiteSpace_Net35(value);
+#else
 			return string.IsNullOrWhiteSpace(value);
-#elif NET35
-			return value == null || value.Trim().Length == 0;
 #endif
+		}
+
+		internal static bool IsNullOrWhiteSpace_Net35(string value)
+		{
+			return value == null || value.Trim().Length == 0;
 		}
 
 		public static string Join(string separator, IEnumerable<string> values)
 		{
-#if NET40 || NET45
-			return string.Join(separator, values);
-#elif NET35
+#if NET35 || NET35_CLIENT
 			return string.Join(separator, values.ToArray());
+#else
+			return string.Join(separator, values);
 #endif
 		}
 		public static string Join<T>(string separator, IEnumerable<T> values) where T : class
 		{
-#if NET40 || NET45
+#if NET35 || NET35_CLIENT
+			return string.Join(separator, values.Select(value => value?.ToString()).ToArray());
+#else
 			return string.Join(separator, values);
-#elif NET35
-			return string.Join(separator, values.Select(value => value.ToString()).ToArray());
 #endif
 		}
 	}

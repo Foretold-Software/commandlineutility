@@ -1,0 +1,53 @@
+﻿<!-- Copyright (c) Foretold Software, LLC. All rights reserved. Licensed under the Microsoft Public License (MS-PL). See the license.md file in the project root directory for full license information. -->
+
+<Project>
+
+	<!-- Common build settings -->
+	<PropertyGroup>
+		<Deterministic>true</Deterministic>
+		<NoWarn>1591;$(NoWarn)</NoWarn>
+	</PropertyGroup>
+
+	<!-- Common assembly attributes -->
+	<PropertyGroup>
+		<Company>Foretold Software, LLC</Company>
+		<Copyright>Copyright © Foretold Software, LLC. All rights reserved.</Copyright>
+	</PropertyGroup>
+
+	<!-- Supported .Net Framework versions -->
+	<PropertyGroup>
+		<!-- Support extends through 5-10-2022 (and likely longer) -->
+		<AllSupportedTFMs>net48</AllSupportedTFMs>
+
+		<!-- Support extends through 5-11-2021 -->
+		<AllSupportedTFMs>$(AllSupportedTFMs);net472</AllSupportedTFMs>
+
+		<!-- Support extends through 10-13-2026 -->
+		<AllSupportedTFMs>$(AllSupportedTFMs);net462</AllSupportedTFMs>
+
+		<!-- Support extends through 10-14-2025 -->
+		<AllSupportedTFMs>$(AllSupportedTFMs);net46</AllSupportedTFMs>
+
+		<!-- Support ended in 2016, but these version are included
+			 in Windows 8 and 8.1 OOB, for which 'Extended Support'
+			 continues through January 2023 -->
+		<AllSupportedTFMs>$(AllSupportedTFMs);net451</AllSupportedTFMs>
+		<AllSupportedTFMs>$(AllSupportedTFMs);net45</AllSupportedTFMs>
+
+		<!-- Support extends through 10-10-2028 -->
+		<AllSupportedTFMs>$(AllSupportedTFMs);net35</AllSupportedTFMs>
+		<AllSupportedTFMs>$(AllSupportedTFMs);net35-client</AllSupportedTFMs>
+
+
+		<!-- Supported versions for the unit testing project -->
+		<UnitTestTFMs>net48</UnitTestTFMs>
+		<UnitTestTFMs>$(UnitTestTFMs);net472</UnitTestTFMs>
+		<UnitTestTFMs>$(UnitTestTFMs);net462</UnitTestTFMs>
+		<UnitTestTFMs>$(UnitTestTFMs);net46</UnitTestTFMs>
+		<UnitTestTFMs>$(UnitTestTFMs);net451</UnitTestTFMs>
+		<UnitTestTFMs>$(UnitTestTFMs);net45</UnitTestTFMs>
+		<!-- MSTest v2 doesn't support net35.
+		<UnitTestTFMs>$(UnitTestTFMs);net35</UnitTestTFMs>-->
+	</PropertyGroup>
+
+</Project>
