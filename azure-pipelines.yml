@@ -16,7 +16,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  versionMajorMinor: '0.1'
+  versionMajorMinor: '1.1'
   versionInitialBuildNumber: '100'
   productVersion:  $[format('{0}.{1}', variables['versionMajorMinor'], counter(variables['versionMajorMinor'], variables['versionInitialBuildNumber']))]
   solution: '**/*.sln'
