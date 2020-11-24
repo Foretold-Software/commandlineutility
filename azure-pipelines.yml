@@ -1,0 +1,66 @@
+# Copyright (c) Foretold Software, LLC. All rights reserved. Licensed under the Microsoft Public License (MS-PL). See the license.md file in the project root directory for full license information.
+
+##################################################################################
+#   Filename: azure-pipelines.yml
+#
+#   Description:
+#       This file contains elements necessary to build, test,
+#       and deploy the CommandLineUtility project.
+#
+##################################################################################
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  versionMajorMinor: '0.1'
+  versionInitialBuildNumber: '100'
+  productVersion:  $[format('{0}.{1}', variables['versionMajorMinor'], counter(variables['versionMajorMinor'], variables['versionInitialBuildNumber']))]
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+name: $(productVersion)
+
+stages:
+- stage: build
+  displayName: Build
+  jobs:
+
+  - job: build
+    displayName: Build
+    steps:
+
+    - task: NuGetToolInstaller@1
+      displayName: Nuget - Install tool
+
+    - task: NuGetCommand@2
+      displayName: Nuget - Restore
+      inputs:
+        restoreSolution: '$(solution)'
+
+    - task: VSBuild@1
+      displayName: Build solution
+      inputs:
+        solution: '$(solution)'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+        msbuildArgs: '/p:Version=$(productVersion)'
+
+    - task: VSTest@2
+      displayName: Run unit tests
+      inputs:
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+
+    - task: NuGetCommand@2
+      name: PushNugetPackage
+      displayName: Nuget - Push to Feed
+      inputs:
+        command: 'push'
+        packagesToPush: 'src/CommandLineUtility/**/*.nupkg;!src/CommandLineUtility/**/*.symbols.nupkg'
+        nuGetFeedType: 'internal'
+        publishVstsFeed: 'e2f9ae14-c675-4d64-b074-45655dbb4a2e/2ba4077c-73df-4cbb-b0d5-db3717286411'
