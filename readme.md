@@ -1,3 +1,5 @@
+[license]: # "Copyright (c) Foretold Software, LLC. All rights reserved. Licensed under the Microsoft Public License (MS-PL). See the license.md file in the project root directory for full license information."
+
 # Command Line Utility (CommandLineUtility)
 
 To get a copy of CommandLineUtility for use in your project, please visit the [CommandLineUtility NuGet page](https://www.nuget.org/packages/CommandLineUtility).
