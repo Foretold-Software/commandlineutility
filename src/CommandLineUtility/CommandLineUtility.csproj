@@ -1,0 +1,9 @@
+﻿<!-- Copyright (c) Foretold Software, LLC. All rights reserved. Licensed under the Microsoft Public License (MS-PL). See the license.md file in the project root directory for full license information. -->
+
+<Project Sdk="MSBuild.Sdk.Extras/2.1.2">
+
+	<PropertyGroup>
+		<TargetFrameworks>net35;net40;net45</TargetFrameworks>
+	</PropertyGroup>
+
+</Project>
