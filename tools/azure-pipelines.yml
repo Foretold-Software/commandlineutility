@@ -25,6 +25,9 @@ variables:
   Version.Build: $[counter(variables['Version.MajorMinor'], variables['Version.Build.InitialValue'])]
   Build.Version: $[format('{0}.{1}', variables['Version.MajorMinor'], variables['Version.Build'])]
 
+  #Build.TotalCount: $[counter('Build.TotalCount', variables['Version.Build.InitialValue'])]
+  Build.TotalCount: $[counter('Build.TotalCount', variables['Version.Build'])]
+
   # Solution build variables
   Build.Solution: '**\*.sln'
   Build.Platform: 'Any CPU'
