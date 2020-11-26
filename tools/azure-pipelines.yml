@@ -13,6 +13,8 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
+  Project.Name: CommandLineUtility
+
   # Versioning variables
   Version.MajorMinor.NonReleaseDefault: '1.1'
 
@@ -31,7 +33,7 @@ variables:
   Build.Solution: '**\*.sln'
   Build.Platform: 'Any CPU'
   Build.Configuration: 'Release'
-  Build.Output.Directory: 'src\CommandLineUtility\bin\$(Build.Configuration)'
+  Build.Output.Directory: 'src\$(Project.Name)\bin\$(Build.Configuration)'
   Build.Output.NuGetPackage: '$(Build.Output.Directory)\*.nupkg'
   Source.License: 'license.md'
 
@@ -82,14 +84,90 @@ stages:
 
 
     # --------------------------------------------------
-    #  Publish NuGet package to internal feed
+    #  Stage NuGet package
     # --------------------------------------------------
 
-    - task: NuGetCommand@2
-      name: PushNugetPackage
-      displayName: Nuget - Push to Feed
+    # Copy the NuGet package to the artifact staging directory.
+    - task: CopyFiles@2
+      displayName: NuGet package - Copy to artifact staging directory
       inputs:
-        command: 'push'
-        packagesToPush: 'src/CommandLineUtility/**/*.nupkg;!src/CommandLineUtility/**/*.symbols.nupkg'
-        nuGetFeedType: 'internal'
-        publishVstsFeed: 'e2f9ae14-c675-4d64-b074-45655dbb4a2e/2ba4077c-73df-4cbb-b0d5-db3717286411'
+        Contents: '$(Build.Output.NuGetPackage)'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        flattenFolders: true
+
+    # Delete the NuGet package from the build output directory so it is not included in the binaries archive.
+    - task: DeleteFiles@1
+      displayName: NuGet package - Delete
+      inputs:
+        Contents: '$(Build.Output.NuGetPackage)'
+
+
+    # --------------------------------------------------
+    #  Stage debug symbols
+    # --------------------------------------------------
+
+    # Copy the debug symbols files to a temporary folder in the artifact staging directory.
+    - task: CopyFiles@2
+      displayName: Debug symbols - Copy to artifact staging directory
+      inputs:
+        SourceFolder: '$(Build.Output.Directory)'
+        Contents: '**\*.pdb'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)\symbols'
+
+    # Create an archive in the artifact staging directory with the debug symbols.
+    - task: ArchiveFiles@2
+      displayName: Debug symbols - Archive
+      inputs:
+        rootFolderOrFile: '$(Build.ArtifactStagingDirectory)\symbols'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)\$(Project.Name).$(Build.Version)-debug.zip'
+
+    # Delete the debug symbols files from the build output directory so they are not included in the binaries archive.
+    - task: DeleteFiles@1
+      displayName: Debug symbols - Delete
+      inputs:
+        Contents: '$(Build.Output.Directory)\**\*.pdb'
+
+    # Delete the temporary directory so it is not included in the published artifacts.
+    - task: DeleteFiles@1
+      displayName: Debug symbols - Delete temporary folder
+      inputs:
+        SourceFolder: '$(Build.ArtifactStagingDirectory)'
+        Contents: 'symbols'
+
+    # --------------------------------------------------
+    #  Stage binaries
+    # --------------------------------------------------
+
+    # Create an archive in the artifact staging directory with the build output binaries.
+    - task: ArchiveFiles@2
+      displayName: Archive binaries
+      inputs:
+        rootFolderOrFile: '$(Build.Output.Directory)'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)\$(Project.Name).$(Build.Version)-binaries.zip'
+
+    # Include the license file in the binaries archive.
+    - task: ArchiveFiles@2
+      displayName: Archive binaries - add license
+      inputs:
+        rootFolderOrFile: '$(Source.License)'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)\$(Project.Name).$(Build.Version)-binaries.zip'
+        replaceExistingArchive: false
+
+
+    # --------------------------------------------------
+    #  Publish artifacts
+    # --------------------------------------------------
+
+    # Publish all the files in the artifact staging directory as pipeline artifacts.
+    - task: PublishPipelineArtifact@1
+      displayName: Publish artifacts
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: 'Build pipeline artifacts'
+        publishLocation: 'pipeline'
