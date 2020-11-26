@@ -13,14 +13,29 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  versionMajorMinor: '1.1'
-  versionInitialBuildNumber: '100'
-  productVersion:  $[format('{0}.{1}', variables['versionMajorMinor'], counter(variables['versionMajorMinor'], variables['versionInitialBuildNumber']))]
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  # Versioning variables
+  Version.MajorMinor.NonReleaseDefault: '1.1'
 
-name: $(productVersion)
+  ${{ if startsWith(lower(variables['Build.SourceBranch']), 'refs/heads/release/') }}:
+    Version.MajorMinor: $[variables['Build.SourceBranchName']]
+  ${{ if not(startsWith(lower(variables['Build.SourceBranch']), 'refs/heads/release/')) }}:
+    Version.MajorMinor: $[variables['Version.MajorMinor.NonReleaseDefault']]
+
+  Version.Build.InitialValue: '100'
+  Version.Build: $[counter(variables['Version.MajorMinor'], variables['Version.Build.InitialValue'])]
+  Build.Version: $[format('{0}.{1}', variables['Version.MajorMinor'], variables['Version.Build'])]
+
+  # Solution build variables
+  Build.Solution: '**\*.sln'
+  Build.Platform: 'Any CPU'
+  Build.Configuration: 'Release'
+  Build.Output.Directory: 'src\CommandLineUtility\bin\$(Build.Configuration)'
+  Build.Output.NuGetPackage: '$(Build.Output.Directory)\*.nupkg'
+  Source.License: 'license.md'
+
+
+name: $(Build.Version)
+
 
 stages:
 - stage: build
@@ -37,21 +52,21 @@ stages:
     - task: NuGetCommand@2
       displayName: Nuget - Restore
       inputs:
-        restoreSolution: '$(solution)'
+        restoreSolution: '$(Build.Solution)'
 
     - task: VSBuild@1
       displayName: Build solution
       inputs:
-        solution: '$(solution)'
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
-        msbuildArgs: '/p:Version=$(productVersion)'
+        solution: '$(Build.Solution)'
+        platform: '$(Build.Platform)'
+        configuration: '$(Build.Configuration)'
+        msbuildArgs: '/p:Version=$(Build.Version)'
 
     - task: VSTest@2
       displayName: Run unit tests
       inputs:
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
+        platform: '$(Build.Platform)'
+        configuration: '$(Build.Configuration)'
 
     - task: NuGetCommand@2
       name: PushNugetPackage
