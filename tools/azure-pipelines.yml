@@ -23,10 +23,9 @@ variables:
 
   Version.Build.InitialValue: '100'
   Version.Build: $[counter(variables['Version.MajorMinor'], variables['Version.Build.InitialValue'])]
-  Build.Version: $[format('{0}.{1}', variables['Version.MajorMinor'], variables['Version.Build'])]
 
-  #Build.TotalCount: $[counter('Build.TotalCount', variables['Version.Build.InitialValue'])]
-  Build.TotalCount: $[counter('Build.TotalCount', variables['Version.Build'])]
+  Build.Version: $[format('{0}.{1}', variables['Version.MajorMinor'], variables['Version.Build'])]
+  Build.TotalCount: $[counter('Build.TotalCount', variables['Version.Build.InitialValue'])]
 
   # Solution build variables
   Build.Solution: '**\*.sln'
