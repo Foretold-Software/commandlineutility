@@ -2,6 +2,14 @@
 
 # Project History
 
+### 11/29/2020 - Release v1.1
+Projects updated to new SDK-style csproj files.\
+Add support for multi-targeting all currently supported and semi-supported versions of the .Net Framework.\
+Add NuGet package creation to regular build process.\
+Add support for building projects and automating releases from CI/CD pipelines.\
+Add automatic build-time versioning, with support for release and non-release branch builds.\
+Customize unit test context assertions with extension methods.
+
 ### 11/14/2020
 Foretold-owned git repo created.\
 Project restructured for FS git csproj template, and new repo populated.
