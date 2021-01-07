@@ -9,6 +9,15 @@
 #
 ##################################################################################
 
+schedules:
+- cron: '0 0 * * *'
+  displayName: Nightly build
+  branches:
+    include:
+    - master
+    exclude: [ string ] # which branches to exclude from the schedule
+  always: 'true' # whether to always run the pipeline or only if there have been source code changes since the last successful scheduled run. The default is false.
+
 pool:
   vmImage: 'windows-latest'
 
